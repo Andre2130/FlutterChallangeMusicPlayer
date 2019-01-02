@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:first_flutter_app/songs.dart';
 import 'package:first_flutter_app/theam.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,31 +23,39 @@ class BottomControls extends StatelessWidget {
           padding: const EdgeInsets.only(top: 40.0, bottom: 50),
           child: new Column(
             children: <Widget>[
-              new RichText(
-                text: new TextSpan(
-                  text: '',
-                  children: [
-                    new TextSpan(
-                      text: 'Song Title\n',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 4.0,
-                        height: 1.5,
-                      )
-                    ),
-                    new TextSpan(
-                      text: 'Artist Name',
-                      style: new TextStyle(
-                        color: Colors.white.withOpacity(0.75),
-                        fontSize: 12,
-                        letterSpacing: 3,
-                        height: 1.5,
+              AudioPlaylistComponent(
+                playlistBuilder: (BuildContext context, Playlist playlist, Widget child){
+
+                  final songTitle = demoPlaylist.songs[playlist.activeIndex].songTitle;
+                  final artistName = demoPlaylist.songs[playlist.activeIndex].artist;
+                 return new RichText(
+                  text: new TextSpan(
+                    text: '',
+                    children: [
+                      new TextSpan(
+                        text: '${songTitle.toUpperCase()}\n',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 4.0,
+                          height: 1.5,
+                        )
                       ),
-                    )
-                  ]
-                ),
+                      new TextSpan(
+                        text: '${artistName.toUpperCase()}',
+                        style: new TextStyle(
+                          color: Colors.white.withOpacity(0.75),
+                          fontSize: 12,
+                          letterSpacing: 3,
+                          height: 1.5,
+                        ),
+                      )
+                    ]
+                  ),
+                  textAlign: TextAlign.center,
+                );
+                },
               ),
                Padding(
                  padding: const EdgeInsets.only(top: 40),
@@ -142,18 +151,21 @@ class PreviousButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new IconButton(
-      splashColor: lightAccentColor,
-      highlightColor: Colors.transparent,
-      icon: new Icon(
-        Icons.skip_previous,
-        color: Colors.white,
-        size: 35.0,
-      ),
-      onPressed: (){
-        // TODO:
+    return new AudioPlaylistComponent(
+      playlistBuilder: (BuildContext context, Playlist playlist, Widget child){
+        return new IconButton(
+        splashColor: lightAccentColor,
+        highlightColor: Colors.transparent,
+        icon: new Icon(
+          Icons.skip_previous,
+          color: Colors.white,
+          size: 35.0,
+        ),
+        onPressed: playlist.previous,
+        );
       },
-      );
+          
+    );
   }
 }
 
@@ -164,18 +176,21 @@ class NextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new IconButton(
-      splashColor: lightAccentColor,
-      highlightColor: Colors.transparent,
-      icon: new Icon(
-        Icons.skip_next,
-        color: Colors.white,
-        size: 35.0,
-      ),
-      onPressed: (){
-        // TODO:
+    return AudioPlaylistComponent(
+      playlistBuilder: (BuildContext context, Playlist playlist, Widget child){
+        return new IconButton(
+        splashColor: lightAccentColor,
+        highlightColor: Colors.transparent,
+        icon: new Icon(
+          Icons.skip_next,
+          color: Colors.white,
+          size: 35.0,
+        ),
+        onPressed: playlist.next,
+        );
       },
-      );
+           
+    );
   }
 }
 

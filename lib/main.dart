@@ -43,8 +43,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Audio(
-      audioUrl: demoPlaylist.songs[0].audioUrl,
+    return new AudioPlaylist(
+      playlist: demoPlaylist.songs.map((DemoSong song) {
+        return song.audioUrl;
+      }).toList(growable: false),
       playbackState: PlaybackState.paused,
           child: new Scaffold(
         appBar: AppBar(
@@ -70,7 +72,16 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             // Seek bar
             new Expanded(
-              child: new AudioRadialSeekBar(),
+              child: AudioPlaylistComponent(
+                playlistBuilder: (BuildContext context, Playlist playlist, Widget child){
+
+                  String albumArtUrl = demoPlaylist.songs[playlist.activeIndex].albumArtUrl;
+
+                  return new AudioRadialSeekBar(
+                    albumArtUrl: albumArtUrl,
+                  );
+                },
+              ),
               
             ),
 
@@ -90,10 +101,11 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class AudioRadialSeekBar extends StatefulWidget {
-  const AudioRadialSeekBar({
-    Key key,
-    @required double seekPercent,
-  }) : super(key: key);
+  final String albumArtUrl;
+
+  AudioRadialSeekBar({
+    this.albumArtUrl,
+  });
 
  
 
@@ -132,6 +144,13 @@ class AudioRadialSeekBarState extends State<AudioRadialSeekBar> {
             final seekMillis = (player.audioLength.inMilliseconds * seekPercent).round();
             player.seek(new Duration(milliseconds: seekMillis));
           },
+          child: new Container(
+            color: accentColor,
+            child: new Image.network(
+              widget.albumArtUrl,
+              fit: BoxFit.cover,
+            ),
+          )
         );
       },
       
@@ -144,11 +163,13 @@ class RadialSeekBar extends StatefulWidget {
   final double progress;
   final double seekPercent;
   final Function(double) onSeekRequested;
+  final Widget child;
 
   RadialSeekBar({
     this.progress = 0.0,
     this.seekPercent = 0.0,
     this.onSeekRequested,
+    this.child,
   });
 
   @override
@@ -232,16 +253,13 @@ class RadialSeekBarState extends State<RadialSeekBar> {
               outterPadding: const EdgeInsets.all(10.0),
                               child: new ClipOval(
                 clipper: new CircleClipper(),
-                child: new Image.network(
-                  demoPlaylist.songs[0].albumArtUrl,
-                  fit: BoxFit.cover,
+                child: widget.child,
                 ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
 
