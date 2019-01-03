@@ -52,22 +52,40 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          leading: new IconButton(
-            icon: new Icon(
-              Icons.arrow_back_ios,
-            ),
-            color: const Color(0xFFDDDDDD),
-            onPressed: (){},
-          ),
-          title: new Text(''),
-          actions: <Widget>[new IconButton(
-            icon: new Icon(
-              Icons.menu,
-            ),
-            color: const Color(0xFFDDDDDD),
-            onPressed: (){},
-          ),],
+          // leading: new IconButton(
+          //   icon: new Icon(
+          //     Icons.arrow_back_ios,
+          //   ),
+          //   color: const Color(0xFFDDDDDD),
+          //   onPressed: (){},
+          // ),
+          title: new Text('WeTheSauce'),
+          // actions: <Widget>[new IconButton(
+          //   icon: new Icon(
+          //     Icons.menu,
+          //   ),
+          //   color: const Color(0xFFDDDDDD),
+          //   onPressed: (){},
+          // ),
+          //],
         ),
+        drawer: new Drawer(
+        child: ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(
+              accountName: new Text('Andre Robinson'),
+              accountEmail: new Text('testemail@test.com'),
+              currentAccountPicture: new CircleAvatar(
+                backgroundImage: new NetworkImage('http://i.pravatar.cc/300'),
+              ),
+              decoration: BoxDecoration(
+                color: lightAccentColor
+              ),
+            ),
+          ],
+        ),
+      ),
+    
         body: new Column(
           children: <Widget>[
             // Seek bar
