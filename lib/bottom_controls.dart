@@ -20,7 +20,7 @@ class BottomControls extends StatelessWidget {
         color: accentColor,
         shadowColor: const Color(0x44000000),
                     child: Padding(
-          padding: const EdgeInsets.only(top: 40.0, bottom: 50),
+          padding: const EdgeInsets.only(top: 20.0, bottom: 50),
           child: new Column(
             children: <Widget>[
               AudioPlaylistComponent(

@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sauce Radio',
+      title: 'WeTheSauce',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -43,75 +43,90 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return new AudioPlaylist(
+    return AudioPlaylist(
       playlist: demoPlaylist.songs.map((DemoSong song) {
         return song.audioUrl;
       }).toList(growable: false),
       playbackState: PlaybackState.paused,
-          child: new Scaffold(
+          child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.grey,
           elevation: 0.0,
-          // leading: new IconButton(
-          //   icon: new Icon(
-          //     Icons.arrow_back_ios,
-          //   ),
-          //   color: const Color(0xFFDDDDDD),
-          //   onPressed: (){},
-          // ),
-          title: new Text('WeTheSauce'),
-          // actions: <Widget>[new IconButton(
-          //   icon: new Icon(
-          //     Icons.menu,
-          //   ),
-          //   color: const Color(0xFFDDDDDD),
-          //   onPressed: (){},
-          // ),
-          //],
+          title: Text('WeTheSauce'),
+          centerTitle: true,
         ),
-        drawer: new Drawer(
+        
+        
+        drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            new UserAccountsDrawerHeader(
-              accountName: new Text('Andre Robinson'),
-              accountEmail: new Text('testemail@test.com'),
-              currentAccountPicture: new CircleAvatar(
-                backgroundImage: new NetworkImage('http://i.pravatar.cc/300'),
+            UserAccountsDrawerHeader(
+              accountName: Text('Andre Robinson'),
+              accountEmail: Text('testemail@test.com'),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: NetworkImage('http://robinsonwd.com/wp-content/uploads/2017/05/aboutDre-1-e1495134823129.jpg'),
               ),
               decoration: BoxDecoration(
-                color: lightAccentColor
+                color: darkAccentColor
               ),
+            ),
+            ListTile(
+              title: Text('My Drip'),
+            ),
+            ListTile(
+              title: Text('Sauce'),
+            ),
+            ListTile(
+              title: Text('Albums'),
+            ),
+            ListTile(
+              title: Text('Artist'),
+            ),
+            ListTile(
+              title: Text('Videos'),
+            ),
+            ListTile(
+              title: Text('Lost in the sauce?'),
             ),
           ],
         ),
       ),
     
-        body: new Column(
-          children: <Widget>[
-            // Seek bar
-            new Expanded(
-              child: AudioPlaylistComponent(
-                playlistBuilder: (BuildContext context, Playlist playlist, Widget child){
+        body: Container(
+          //Background image
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/background3.jpg"),
+              fit: BoxFit.fill
+            )
+          ),
+          child: Column(
+            children: <Widget>[
+              // Seek bar
+              Expanded(
+                child: AudioPlaylistComponent(
+                  playlistBuilder: (BuildContext context, Playlist playlist, Widget child){
 
-                  String albumArtUrl = demoPlaylist.songs[playlist.activeIndex].albumArtUrl;
+                    String albumArtUrl = demoPlaylist.songs[playlist.activeIndex].albumArtUrl;
 
-                  return new AudioRadialSeekBar(
-                    albumArtUrl: albumArtUrl,
-                  );
-                },
+                    return AudioRadialSeekBar(
+                      albumArtUrl: albumArtUrl,
+                    );
+                  },
+                ),
+                
               ),
-              
-            ),
 
-            // Visualizer
-            new Container(
-              width: double.infinity,
-              height: 125.0,
-            ),
+              // Visualizer
+              // Container(
+              //   width: double.infinity,
+              //   height: 25.0,
+              // ),
 
-            // Song title, artist name, controls
-            new BottomControls()
-          ],
+              // Song title, artist name, controls
+              BottomControls()
+            ],
+          ),
         ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
     );
@@ -129,7 +144,7 @@ class AudioRadialSeekBar extends StatefulWidget {
 
   @override
   AudioRadialSeekBarState createState() {
-    return new AudioRadialSeekBarState();
+    return AudioRadialSeekBarState();
   }
 }
 
@@ -153,18 +168,18 @@ class AudioRadialSeekBarState extends State<AudioRadialSeekBar> {
 
         _seekPercent = player.isSeeking ? _seekPercent : null;
 
-        return new RadialSeekBar(
+        return RadialSeekBar(
           progress: playbackProgress,
           seekPercent: _seekPercent,
           onSeekRequested: (double seekPercent){
             setState(() => _seekPercent = seekPercent);
 
             final seekMillis = (player.audioLength.inMilliseconds * seekPercent).round();
-            player.seek(new Duration(milliseconds: seekMillis));
+            player.seek(Duration(milliseconds: seekMillis));
           },
-          child: new Container(
+          child: Container(
             color: accentColor,
-            child: new Image.network(
+            child: Image.network(
               widget.albumArtUrl,
               fit: BoxFit.cover,
             ),
@@ -192,7 +207,7 @@ class RadialSeekBar extends StatefulWidget {
 
   @override
   RadialSeekBarState createState() {
-    return new RadialSeekBarState();
+    return RadialSeekBarState();
   }
 }
 
@@ -249,7 +264,7 @@ class RadialSeekBarState extends State<RadialSeekBar> {
     }else if(widget.seekPercent != null){
       thumbPosition = widget.seekPercent;
     }
-    return new RadialDragGestureDetector(
+    return RadialDragGestureDetector(
       onRadialDragStart: _onDragStart,
       onRadialDragUpdate: _onDragUpdate,
       onRadialDragEnd: _onDragEnd,
@@ -257,11 +272,11 @@ class RadialSeekBarState extends State<RadialSeekBar> {
         width: double.infinity,
         height: double.infinity,
         color: Colors.transparent,
-        child: new Center(
-          child: new Container(
-            width: 140.0,
-            height: 140.0,
-            child: new RadialProgressBar(
+        child: Center(
+          child: Container(
+            width: 250.0,
+            height: 250.0,
+            child: RadialProgressBar(
               trackColor: const Color(0xFFDDDDDD),
               progressPercent: _progress,
               progressColor: accentColor,
@@ -269,8 +284,8 @@ class RadialSeekBarState extends State<RadialSeekBar> {
               thumbColor: lightAccentColor,
               innerPadding: const EdgeInsets.all(10.0),
               outterPadding: const EdgeInsets.all(10.0),
-                              child: new ClipOval(
-                clipper: new CircleClipper(),
+                              child: ClipOval(
+                clipper: CircleClipper(),
                 child: widget.child,
                 ),
               ),
@@ -310,7 +325,7 @@ class RadialProgressBar extends StatefulWidget{
   });
   
   @override
-  _RadialProgressBarState createState() => new _RadialProgressBarState();
+  _RadialProgressBarState createState() => _RadialProgressBarState();
   }
   
   class _RadialProgressBarState extends State<RadialProgressBar> {
@@ -326,14 +341,14 @@ class RadialProgressBar extends StatefulWidget{
             widget.thumbSize,
             ),
             ) / 2.0;
-            return new EdgeInsets.all(outterThickness);
+            return EdgeInsets.all(outterThickness);
     }
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: widget.outterPadding,
-      child: new CustomPaint(
-        foregroundPainter: new RadialSeekBarPainter(
+      child: CustomPaint(
+        foregroundPainter: RadialSeekBarPainter(
           trackWidth: widget.trackWidth,
           trackColor: widget.trackColor,
           progressWidth: widget.progressWidth,
@@ -344,7 +359,7 @@ class RadialProgressBar extends StatefulWidget{
           thumbPosition: widget.thumbPosition,
 
         ),
-        child: new Padding(
+        child: Padding(
           padding: _insetsForPainter() + widget.innerPadding,
           child: widget.child,
         ),
@@ -375,16 +390,16 @@ class RadialSeekBarPainter extends CustomPainter{
     @required thumbColor,
     @required this.thumbPosition,
     
-  }) : trackPaint = new Paint()
+  }) : trackPaint = Paint()
         ..color = trackColor
         ..style = PaintingStyle.stroke
         ..strokeWidth = trackWidth,
-        progressPaint = new Paint()
+        progressPaint = Paint()
          ..color = progressColor
          ..style = PaintingStyle.stroke
          ..strokeWidth = progressWidth
          ..strokeCap = StrokeCap.round,
-         thumbPaint = new Paint()
+         thumbPaint = Paint()
          ..color = thumbColor
          ..style = PaintingStyle.fill;
 
@@ -392,12 +407,12 @@ class RadialSeekBarPainter extends CustomPainter{
   void paint(Canvas canvas, Size size) {
 
     final outterThickness = max(trackWidth, max(progressWidth, thumbSize));
-    Size constrainedSize = new Size(
+    Size constrainedSize = Size(
     size.width - outterThickness,
     size.height - outterThickness,
     );
 
-    final center = new Offset(size.width / 2, size.height / 2);
+    final center = Offset(size.width / 2, size.height / 2);
     final radius = min(constrainedSize.width, constrainedSize.height) / 2;
 
     // Paint Track
@@ -411,7 +426,7 @@ class RadialSeekBarPainter extends CustomPainter{
     final progressAngle = 2 * pi * progressPercent;
 
     canvas.drawArc(
-      new Rect.fromCircle(
+      Rect.fromCircle(
         center: center,
         radius: radius,
       ), 
@@ -426,7 +441,7 @@ class RadialSeekBarPainter extends CustomPainter{
       final thumbAngle = 2 * pi * thumbPosition - (pi / 2);
       final thumbX = cos(thumbAngle) * radius;
       final thumbY = sin(thumbAngle) * radius;
-      final thumbCenter = new Offset(thumbX, thumbY) + center;
+      final thumbCenter = Offset(thumbX, thumbY) + center;
       final thumbRadius = thumbSize / 2;
       canvas.drawCircle(
            thumbCenter,
